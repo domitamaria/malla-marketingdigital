@@ -1,102 +1,141 @@
 // Datos COMPLETOS de la malla (8 semestres)
-const courses = [
-    // --- Semestre 1 ---
-    { id: 1, name: "Nivelación Matemática", semester: 1, credits: 4, category: "Básicas y de Empleabilidad" },
-    { id: 2, name: "Fundamentos de Economía", semester: 1, credits: 4, category: "Básicas y de Empleabilidad" },
-    { id: 3, name: "Habilidades Comunicacionales para el Trabajo", semester: 1, credits: 4, category: "Formación Valórica" },
-    { id: 4, name: "Introducción al Marketing", semester: 1, credits: 6, category: "Especialidad" },
-    { id: 5, name: "Fundamentos de Ventas", semester: 1, credits: 4, category: "Especialidad" },
+const coursesBySemester = {
+    1: [
+        { id: '1-1', name: "Introducción al Marketing" },
+        { id: '1-2', name: "Fundamentos de Ventas" },
+        { id: '1-3', name: "Herramientas Tecnológicas I" },
+        { id: '1-4', name: "Fundamentos de Economía" },
+        { id: '1-5', name: "Nivelación de Matemáticas" },
+        { id: '1-6', name: "Habilidades de Comunicación" }
+    ],
+    2: [
+        { id: '2-1', name: "Plan de Marketing" },
+        { id: '2-2', name: "Sitios Web y Landing Pages" },
+        { id: '2-3', name: "Herramientas Tecnológicas II" },
+        { id: '2-4', name: "Fundamentos de Gestión de Personas", requires: ['1-4'] },
+        { id: '2-5', name: "Fundamentos de Finanzas y Presupuestos" },
+        { id: '2-6', name: "Álgebra", requires: ['1-5'] }
+    ],
+    3: [
+        { id: '3-1', name: "Branding" },
+        { id: '3-2', name: "Storytelling" },
+        { id: '3-3', name: "Herramientas de Marketing Digital" },
+        { id: '3-4', name: "Propuesta de Valor y Precios" },
+        { id: '3-5', name: "Herramientas Tecnológicas III", requires: ['2-3'] },
+        { id: '3-6', name: "Estadística Predictiva", requires: ['2-6'] },
+        { id: '3-7', name: "Fundamentos de Antropología" }
+    ],
+    4: [
+        { id: '4-1', name: "Investigación de Mercados", requires: ['3-6'] },
+        { id: '4-2', name: "Social Media Marketing" },
+        { id: '4-3', name: "Taller Aplicado I de Marketing", requires: ['1-1', '1-2', '1-3', '1-4', '1-5', '1-6', '2-1', '2-2', '2-3', '2-4', '2-5', '2-6', '3-1', '3-2', '3-3', '3-4', '3-5', '3-6', '3-7'] },
+        { id: '4-4', name: "Negociación" },
+        { id: '4-5', name: "Ética para el Trabajo", requires: ['3-7'] },
+        { id: '4-6', name: "Formación Cristiana" },
+        { id: '4-7', name: "Electivo Competencias Globales" }
+    ],
+    5: [
+        { id: '5-1', name: "Medios y Audiencias" },
+        { id: '5-2', name: "Inbound Marketing I" },
+        { id: '5-3', name: "Comunicaciones Integradas de Marketing" },
+        { id: '5-4', name: "Key Account Management" },
+        { id: '5-5', name: "Formación Complementaria" }
+    ],
+    6: [
+        { id: '6-1', name: "Diseño UX/UI" },
+        { id: '6-2', name: "Inbound Marketing II", requires: ['5-2'] },
+        { id: '6-3', name: "Taller Aplicado II", requires: ['1-1', '1-2', '1-3', '1-4', '1-5', '1-6', '2-1', '2-2', '2-3', '2-4', '2-5', '2-6', '3-1', '3-2', '3-3', '3-4', '3-5', '3-6', '3-7', '4-1', '4-2', '4-3', '4-4', '4-5', '4-6', '4-7', '5-1', '5-2', '5-3', '5-4', '5-5'] },
+        { id: '6-4', name: "Big Data e Inteligencia de Negocios", requires: ['3-5'] },
+        { id: '6-5', name: "Cadena de Suministros" }
+    ],
+    7: [
+        { id: '7-1', name: "Productos y Servicios" },
+        { id: '7-2', name: "Inbound Marketing III", requires: ['6-2'] },
+        { id: '7-3', name: "Canales de Distribución & E-commerce" },
+        { id: '7-4', name: "Gestión de Equipos de Venta" },
+        { id: '7-5', name: "Ética Profesional", requires: ['4-5'] },
+        { id: '7-6', name: "Formación Complementaria" }
+    ],
+    8: [
+        { id: '8-1', name: "Taller Aplicado Final", requires: ['1-1', '1-2', '1-3', '1-4', '1-5', '1-6', '2-1', '2-2', '2-3', '2-4', '2-5', '2-6', '3-1', '3-2', '3-3', '3-4', '3-5', '3-6', '3-7', '4-1', '4-2', '4-3', '4-4', '4-5', '4-6', '4-7', '5-1', '5-2', '5-3', '5-4', '5-5', '6-1', '6-2', '6-3', '6-4', '6-5', '7-1', '7-2', '7-3', '7-4', '7-5', '7-6'] },
+        { id: '8-2', name: "Habilidades Comunicacionales para el Trabajo", requires: ['1-6'] },
+        { id: '8-3', name: "Electivo Competencias Globales" }
+    ]
+};
 
-    // --- Semestre 2 ---
-    { id: 6, name: "Álgebra", semester: 2, credits: 4, category: "Básicas y de Empleabilidad" },
-    { id: 7, name: "Ética para el Trabajo", semester: 2, credits: 4, category: "Formación Valórica" },
-    { id: 8, name: "Plan de Marketing", semester: 2, credits: 6, category: "Especialidad" },
-    { id: 9, name: "Medios & Audiencias", semester: 2, credits: 6, category: "Especialidad" },
-    { id: 10, name: "Herramientas Tecnológicas I", semester: 2, credits: 4, category: "Especialidad" },
+// Funciones principales
+function renderSemesters() {
+    const container = document.getElementById('semesters-container');
+    container.innerHTML = '';
 
-    // --- Semestre 3 ---
-    { id: 11, name: "Estadística Descriptiva", semester: 3, credits: 4, category: "Básicas y de Empleabilidad" },
-    { id: 12, name: "Fundamentos de Gestión de Personas", semester: 3, credits: 4, category: "Básicas y de Empleabilidad" },
-    { id: 13, name: "Branding", semester: 3, credits: 6, category: "Especialidad" },
-    { id: 14, name: "Investigación de Mercados", semester: 3, credits: 6, category: "Especialidad" },
-    { id: 15, name: "Herramientas de Marketing Digital", semester: 3, credits: 4, category: "Especialidad" },
-
-    // --- Semestre 4 ---
-    { id: 16, name: "Fundamentos de Finanzas y Presupuestos", semester: 4, credits: 4, category: "Básicas y de Empleabilidad" },
-    { id: 17, name: "Formación Cristiana", semester: 4, credits: 4, category: "Formación Valórica" },
-    { id: 18, name: "Diseño UX/UI", semester: 4, credits: 6, category: "Especialidad" },
-    { id: 19, name: "Sitios Web y Landing Pages", semester: 4, credits: 6, category: "Especialidad" },
-    { id: 20, name: "Herramientas Tecnológicas II", semester: 4, credits: 4, category: "Especialidad" },
-
-    // --- Semestre 5 ---
-    { id: 21, name: "Cadena de Suministros", semester: 5, credits: 4, category: "Básicas y de Empleabilidad" },
-    { id: 22, name: "Ética Profesional", semester: 5, credits: 4, category: "Formación Valórica" },
-    { id: 23, name: "Inbound Marketing I", semester: 5, credits: 6, category: "Especialidad" },
-    { id: 24, name: "Social Media Marketing", semester: 5, credits: 6, category: "Especialidad" },
-    { id: 25, name: "Herramientas Tecnológicas III", semester: 5, credits: 4, category: "Especialidad" },
-
-    // --- Semestre 6 ---
-    { id: 26, name: "Análisis y Gestión de Datos", semester: 6, credits: 4, category: "Básicas y de Empleabilidad" },
-    { id: 27, name: "Electivo Competencias Globales", semester: 6, credits: 4, category: "Formación Complementaria" },
-    { id: 28, name: "Inbound Marketing II", semester: 6, credits: 6, category: "Especialidad" },
-    { id: 29, name: "Propuesta de Valor y Precios", semester: 6, credits: 6, category: "Especialidad" },
-    { id: 30, name: "Taller Aplicado I de Marketing", semester: 6, credits: 4, category: "Talleres Aplicados" },
-
-    // --- Semestre 7 ---
-    { id: 31, name: "Big Data e Inteligencia de Negocios", semester: 7, credits: 4, category: "Básicas y de Empleabilidad" },
-    { id: 32, name: "Electivo Competencias Globales", semester: 7, credits: 4, category: "Formación Complementaria" },
-    { id: 33, name: "Inbound Marketing III", semester: 7, credits: 6, category: "Especialidad" },
-    { id: 34, name: "Canales de Distribución & E-Commerce", semester: 7, credits: 6, category: "Especialidad" },
-    { id: 35, name: "Taller Aplicado II de Marketing", semester: 7, credits: 4, category: "Talleres Aplicados" },
-
-    // --- Semestre 8 ---
-    { id: 36, name: "Taller Aplicado Final", semester: 8, credits: 12, category: "Talleres Aplicados" }
-];
-
-// Función para mostrar asignaturas
-function renderGrid() {
-    const grid = document.getElementById('grid');
-    if (!grid) {
-        console.error("No se encontró el elemento con id 'grid'");
-        return;
+    for (const [semester, courses] of Object.entries(coursesBySemester)) {
+        const semesterEl = document.createElement('div');
+        semesterEl.className = 'semester';
+        semesterEl.innerHTML = `<h2>Semestre ${semester}</h2>`;
+        
+        courses.forEach(course => {
+            const courseEl = document.createElement('div');
+            courseEl.className = 'course';
+            courseEl.dataset.id = course.id;
+            courseEl.innerHTML = `<h3>${course.name}</h3>`;
+            semesterEl.appendChild(courseEl);
+        });
+        
+        container.appendChild(semesterEl);
     }
-    grid.innerHTML = '';
+    
+    updateLockedStates();
+    loadCompletedCourses();
+}
 
-    courses.forEach(course => {
-        const courseElement = document.createElement('div');
-        courseElement.className = `course ${course.category.toLowerCase().replace(/\s+/g, '-')}`;
-        courseElement.innerHTML = `
-            <h3>${course.name}</h3>
-            <p><strong>Semestre:</strong> ${course.semester}</p>
-            <p><strong>Créditos:</strong> ${course.credits}</p>
-            <p><strong>Categoría:</strong> ${course.category}</p>
-        `;
-        grid.appendChild(courseElement);
+function findCourseById(id) {
+    for (const semester in coursesBySemester) {
+        const course = coursesBySemester[semester].find(c => c.id === id);
+        if (course) return course;
+    }
+    return null;
+}
+
+function updateLockedStates() {
+    document.querySelectorAll('.course').forEach(courseEl => {
+        const courseId = courseEl.dataset.id;
+        const course = findCourseById(courseId);
+        
+        if (course?.requires) {
+            const allCompleted = course.requires.every(reqId => {
+                const reqEl = document.querySelector(`.course[data-id="${reqId}"]`);
+                return reqEl?.classList.contains('completed');
+            });
+            
+            courseEl.classList.toggle('locked', !allCompleted);
+        }
     });
 }
 
-// Filtros y búsqueda
-document.getElementById('search').addEventListener('input', (e) => {
-    const searchTerm = e.target.value.toLowerCase();
-    document.querySelectorAll('.course').forEach(course => {
-        const name = course.querySelector('h3').textContent.toLowerCase();
-        course.classList.toggle('hidden', !name.includes(searchTerm));
+// Tachado interactivo
+document.addEventListener('click', (e) => {
+    const courseEl = e.target.closest('.course');
+    if (!courseEl || courseEl.classList.contains('locked')) return;
+    
+    courseEl.classList.toggle('completed');
+    saveCompletedState(courseEl);
+    updateLockedStates();
+});
+
+// Persistencia
+function saveCompletedState(courseEl) {
+    const completedCourses = JSON.parse(localStorage.getItem('completedCourses') || '{}');
+    completedCourses[courseEl.dataset.id] = courseEl.classList.contains('completed');
+    localStorage.setItem('completedCourses', JSON.stringify(completedCourses));
+}
+
+function loadCompletedCourses() {
+    const completedCourses = JSON.parse(localStorage.getItem('completedCourses') || '{}');
+    Object.entries(completedCourses).forEach(([id, completed]) => {
+        const courseEl = document.querySelector(`.course[data-id="${id}"]`);
+        if (courseEl && completed) courseEl.classList.add('completed');
     });
-});
+}
 
-document.getElementById('semester-filter').addEventListener('change', (e) => {
-    const semester = e.target.value;
-    document.querySelectorAll('.course').forEach(course => {
-        const courseSemester = course.querySelector('p:nth-of-type(1)').textContent.split(' ')[1];
-        course.classList.toggle('hidden', semester !== 'all' && courseSemester !== semester);
-    });
-});
-
-document.getElementById('toggle-all').addEventListener('click', () => {
-    const courses = document.querySelectorAll('.course');
-    const allHidden = Array.from(courses).every(c => c.classList.contains('hidden'));
-    courses.forEach(course => course.classList.toggle('hidden', !allHidden));
-});
-
-// Iniciar al cargar la página
-document.addEventListener('DOMContentLoaded', renderGrid);
+// Inicialización
+document.addEventListener('DOMContentLoaded', renderSemesters);
