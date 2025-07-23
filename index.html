@@ -2,18 +2,20 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Malla Marketing Digital</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <!-- Fuente Fascinate para título -->
-  <link href="https://fonts.googleapis.com/css2?family=Fascinate&display=swap" rel="stylesheet" />
+  <title>Malla Curricular</title>
   <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
+  <h1>Ingeniería en Marketing Digital</h1>
   <div class="container">
-    <h1>Malla Curricular - Marketing Digital</h1>
     <div id="years-container"></div>
+  </div>
+
+  <div id="progress-container">
+    <div id="credit-counter">Créditos completados: 0 / 380</div>
+    <div id="average-grade">Promedio ponderado: -</div>
+    <canvas id="progressChart" width="120" height="120"></canvas>
   </div>
 
   <script src="script.js"></script>
