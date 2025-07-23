@@ -98,12 +98,13 @@ function calculateWeightedAverage() {
 
 function renderCurriculum() {
   yearsContainer.innerHTML = '';
+  const years = {};
 
   for (const [semesterNumber, semesterCourses] of Object.entries(coursesBySemester)) {
     const year = Math.ceil(semesterNumber / 2);
-    let yearRow = document.querySelector(`.year-row[data-year="${year}"]`);
-    if (!yearRow) {
-      yearRow = document.createElement('div');
+
+    if (!years[year]) {
+      const yearRow = document.createElement('div');
       yearRow.classList.add('year-row');
       yearRow.dataset.year = year;
 
@@ -117,6 +118,8 @@ function renderCurriculum() {
       yearContainer.appendChild(yearColumn);
       yearRow.appendChild(yearContainer);
       yearsContainer.appendChild(yearRow);
+
+      years[year] = yearColumn;
     }
 
     const semesterDiv = document.createElement('div');
@@ -131,10 +134,6 @@ function renderCurriculum() {
       const isCompleted = localStorage.getItem(`course-completed-${course.id}`) === 'true';
       const savedGrade = localStorage.getItem(`course-grade-${course.id}`);
 
-      if (isCompleted) {
-        courseDiv.classList.add('completed');
-      }
-
       if (course.requires) {
         const prerequisitesMet = course.requires.every(reqId =>
           localStorage.getItem(`course-completed-${reqId}`) === 'true'
@@ -142,10 +141,14 @@ function renderCurriculum() {
         if (!prerequisitesMet) courseDiv.classList.add('locked');
       }
 
-      courseDiv.innerHTML = `${course.name}`;
-      if (savedGrade) {
-        courseDiv.innerHTML += ` <span class="grade-label">${savedGrade}</span>`;
+      if (isCompleted) {
+        courseDiv.classList.add('completed');
       }
+
+      courseDiv.innerHTML = `
+        <span class="nombre">${course.name}</span>
+        ${savedGrade ? `<span class="nota">${savedGrade}</span>` : ''}
+      `;
 
       courseDiv.addEventListener('click', () => {
         if (courseDiv.classList.contains('locked')) return;
@@ -178,7 +181,7 @@ function renderCurriculum() {
       semesterDiv.appendChild(courseDiv);
     });
 
-    yearRow.querySelector('.year-column').appendChild(semesterDiv);
+    years[year].appendChild(semesterDiv);
   }
 
   updateProgress();
@@ -221,6 +224,7 @@ function updateProgress() {
     chart.update();
   }
 }
+
 function simularProgreso() {
   Object.values(coursesBySemester).flat().forEach(course => {
     localStorage.setItem(`course-completed-${course.id}`, 'true');
@@ -230,4 +234,14 @@ function simularProgreso() {
   updateProgress();
 }
 
-document.addEventListener('DOMContentLoaded', renderCurriculum);
+document.addEventListener('DOMContentLoaded', () => {
+  if (!localStorage.getItem('initialized')) {
+    Object.values(coursesBySemester).flat().forEach(course => {
+      localStorage.removeItem(`course-completed-${course.id}`);
+      localStorage.removeItem(`course-grade-${course.id}`);
+    });
+    localStorage.setItem('initialized', 'true');
+  }
+
+  renderCurriculum();
+});
