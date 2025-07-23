@@ -221,5 +221,13 @@ function updateProgress() {
     chart.update();
   }
 }
+function simularProgreso() {
+  Object.values(coursesBySemester).flat().forEach(course => {
+    localStorage.setItem(`course-completed-${course.id}`, 'true');
+    localStorage.setItem(`course-grade-${course.id}`, 'A');
+  });
+  renderCurriculum();
+  updateProgress();
+}
 
 document.addEventListener('DOMContentLoaded', renderCurriculum);
