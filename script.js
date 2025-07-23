@@ -72,6 +72,7 @@ const yearsContainer = document.getElementById('years-container');
 const creditCounter = document.getElementById('credit-counter');
 const averageGrade = document.getElementById('average-grade');
 let chart;
+let seleccionandoCursando = false;
 
 function calculateCompletedCredits() {
   return Object.values(coursesBySemester).flat().reduce((sum, course) => {
@@ -132,6 +133,7 @@ function renderCurriculum() {
       courseDiv.dataset.id = course.id;
 
       const isCompleted = localStorage.getItem(`course-completed-${course.id}`) === 'true';
+      const isCursando = localStorage.getItem(`course-cursando-${course.id}`) === 'true';
       const savedGrade = localStorage.getItem(`course-grade-${course.id}`);
 
       if (course.requires) {
@@ -141,9 +143,8 @@ function renderCurriculum() {
         if (!prerequisitesMet) courseDiv.classList.add('locked');
       }
 
-      if (isCompleted) {
-        courseDiv.classList.add('completed');
-      }
+      if (isCompleted) courseDiv.classList.add('completed');
+      if (isCursando && !isCompleted) courseDiv.classList.add('cursando');
 
       courseDiv.innerHTML = `
         <span class="nombre">${course.name}</span>
@@ -153,9 +154,17 @@ function renderCurriculum() {
       courseDiv.addEventListener('click', () => {
         if (courseDiv.classList.contains('locked')) return;
 
+        if (seleccionandoCursando) {
+          const isNowCursando = !courseDiv.classList.contains('cursando');
+          localStorage.setItem(`course-cursando-${course.id}`, isNowCursando ? 'true' : 'false');
+          renderCurriculum();
+          return;
+        }
+
         const isNowCompleted = !courseDiv.classList.contains('completed');
         courseDiv.classList.toggle('completed');
         localStorage.setItem(`course-completed-${course.id}`, isNowCompleted ? 'true' : 'false');
+        localStorage.removeItem(`course-cursando-${course.id}`);
 
         if (isNowCompleted) {
           let newGrade = prompt(`Ingresa la nota final para "${course.name}" (1.0 a 7.0 o "A" si fue aprobado sin nota):`, savedGrade || '');
@@ -225,10 +234,18 @@ function updateProgress() {
   }
 }
 
+function toggleCursando() {
+  seleccionandoCursando = !seleccionandoCursando;
+  alert(seleccionandoCursando
+    ? 'Haz clic en las asignaturas que estás cursando actualmente.'
+    : 'Modo "Cursando" desactivado.');
+}
+
 function simularProgreso() {
   Object.values(coursesBySemester).flat().forEach(course => {
     localStorage.setItem(`course-completed-${course.id}`, 'true');
     localStorage.setItem(`course-grade-${course.id}`, 'A');
+    localStorage.removeItem(`course-cursando-${course.id}`);
   });
   renderCurriculum();
   updateProgress();
@@ -239,6 +256,7 @@ document.addEventListener('DOMContentLoaded', () => {
     Object.values(coursesBySemester).flat().forEach(course => {
       localStorage.removeItem(`course-completed-${course.id}`);
       localStorage.removeItem(`course-grade-${course.id}`);
+      localStorage.removeItem(`course-cursando-${course.id}`);
     });
     localStorage.setItem('initialized', 'true');
   }
